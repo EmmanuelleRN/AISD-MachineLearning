@@ -1,0 +1,72 @@
+---
+title: "~"
+subtitle: " "
+date: " "
+output:
+  xaringan::moon_reader:
+    css: [default, my_css.css, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      slideNumberFormat: '%current%'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class: class: center, middle, inverse
+
+
+<!-- css: [default, duke-blue, hygge-duke] -->
+
+```{r setup, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+xaringanExtra::use_logo('www/channels4_profile-removebg-preview.png')
+```
+
+```{r include=FALSE}
+library(dplyr)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+```{css, echo = F}
+.regression table {
+  font-size: 12px;     
+}
+
+.dataTables_info{
+  font-size: 10px;
+}
+
+.dataTables_paginate{
+  font-size: 10px;
+}
+
+.dataTables_length{
+  font-size: 10px;
+}
+```
+
+
+# Machine Learning
+
+---
+
+# Machine Learning - Concepts
+
+- Machine Learning (ML) is a subset of Artificial Intelligence (AI)
+- Algorithms that can improve automatically through experience and by the use of data without being explicit programmed, reason why we say that the algorithms learn.
+- With ML algorithms we can build a model to make predictions or decisions.
+- Machine learning algorithms are used many different applications, for example:
+  - Medicine
+  - Email filtering
+  - Speech recognition
+  - Computer vision
+
+![](www/ml-ai.png){width=50px}
+
+---
+
+class: center, middle
+background-image: url(www/machine-learning.png)
+background-size: contain
