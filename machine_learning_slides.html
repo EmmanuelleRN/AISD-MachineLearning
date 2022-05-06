@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>~</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding/datatables.js"></script>
+    <script src="libs/jquery/jquery-3.6.0.min.js"></script>
+    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <link rel="stylesheet" href="my_css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# ~
+
+---
+
+
+class: class: center, middle
+
+
+&lt;!-- css: [default, duke-blue, hygge-duke] --&gt;
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 110px;
+height: 128px;
+z-index: 0;
+background-image: url(www/channels4_profile-removebg-preview.png);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:1em;right:1em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.inverse):not(.hide_logo)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
+
+
+&lt;style type="text/css"&gt;
+.regression table {
+  font-size: 12px;     
+}
+
+.dataTables_info{
+  font-size: 10px;
+}
+
+.dataTables_paginate{
+  font-size: 10px;
+}
+
+.dataTables_length{
+  font-size: 10px;
+}
+&lt;/style&gt;
+
+
+# Machine Learning
+
+---
+
+# Machine Learning - Concepts
+
+- Machine Learning (ML) is a subset of Artificial Intelligence (AI)
+- Algorithms that can improve automatically through experience and by the use of data without being explicit programmed, reason why we say that the algorithms learn.
+- With ML algorithms we can build a model to make predictions or decisions.
+- Machine learning algorithms are used many different applications, for example:
+  - Medicine
+  - Email filtering
+  - Speech recognition
+  - Computer vision
+
+![](www/ml-ai.png){width=50px}
+
+---
+
+class: center, middle
+background-image: url(www/machine-learning.png)
+background-size: contain
+
+---
+
+class: center, middle
+
+# Supervised Learning
+
+---
+
+# Supervised Learning
+
+**Supervised learning** is where you have input variables (x) and an output variable (Y) and you use an algorithm to learn the mapping function from the input to the output.
+
+&lt;center&gt; Y = f(x) &lt;/center&gt;
+
+- It is the most common type of Machine Learning problem
+
+- It is called **supervised** because we have the label that tell us the correct information, and we are going to be corrected if we predict wrong.
+
+- Supervised learning can be grouped into two problems:
+  - **Regression:** The output variable is a real number, for example, weight
+  - **Clustering:** The output variable is a category, for example, disease and no disease 
+  
+---
+
+# Steps
+
+To solve this kind of problem we have some steps to follow:
+
+1. Data collection
+2. Exploratory Data Analysis (EDA)
+3. Data Processing
+4. Data Modelling
+
+I am going to briefly explain each of these steps that will be clarified when we have the example.
+
+---
+
+# Data Collection
+
+Data is very important for building a Machine learning model, as the model will learn from the dataset provided.
+
+Collecting, **cleaning** and managing your data properly is a key factor for any ML project.
+
+&lt;center&gt;&lt;p style="color:red"&gt;Garbage in, Garbage out&lt;/p&gt;&lt;/center&gt;
+
+# Exploratory Data Analysis
+
+Understand the characteristics and distribution of the data to help us understand what kind of model and what type of learning we are dealing with.
+
+---
+
+# Data Preprocessing or Feature Engineering
+
+If the dataset is not good and if there are missing values, outliers, or the features are not presented in a corrected format, the ML model built from this data will probably be bad. 
+
+Some methods are usually used: encoding, normalization, imputation, outliers and NaN rejections, variable selection
+
+## Encoding
+
+**Encoding** is a method to transform the categorical data into numbers before using it to fit the model. For example, if we have the categories "cat" and "dog" we can encode them to 0 and 1.
+
+---
+
+## Normalization
+
+Some ML models need to be on the "same range" to fit the data properly without the addition of bias due to different scales. For example, if we have as features height as 150cm and salary as 40000, salary might be more important due to potentially being in the 1000's but that's not necessarily true.
+
+Methods to normalise: 
+- **Min-max:** rescales the range of features to the new range in [0,1]
+`$$X_{normalised} = \frac{X - min(X)}{max(X) - min(x)}$$`
+- **Standardisation (Z-score normalisation):** Rescale the feature in a new range with a zero mean and a standard deviation is 1
+`$$X_{normalised} = \frac{X - \bar{X}}{\sigma_X}$$`
+
+---
+
+## NA 
+
+When we have NAs on the data, it means that the data is Not Available, i.e., we have missing information. In this case we can:
+- *Remove* the missing data
+  - If enough data available
+  - If the missing data does not have a pattern, i.e., is random
+- *Inputation*: input the missing data using some statistical method
+  - Use the mean or median of the variable to input missing values
+  - Apply some algorithm, for example, linear or logistic regression to determine the likely value
+
+## Variable selection
+
+Select the most relevant variables for the model. This can be used to:
+- Simplify the model
+- Reduce overfitting
+- Reduce training time
+
+---
+
+# Data Modelling
+
+## Split the data
+
+Before applying the model we need to make sure that we have a dataset to train and evaluate the model and another one to test the accuracy of the model.
+
+We need to have different datasets to train and test the model because we want the model to learn and be able to **generalise on unseen data**. If we use the same dataset for training and testing, we are "leaking" information to the test and we can't garantee that the model can generalise. Also, having this split help us with problems like **overfitting** and **underfitting**.
+
+The splits of the data usually are:
+- Training
+- Validation
+- Testing
+
+We usually split the data into 80% for training, 10% for validation and 10% for testing.
+
+---
+
+### Training set
+
+It is the set of data that is used to train and make the model learn the hidden features/patterns in the data.
+
+It should be large enough so that the model can “learn” correctly. Most of the data is used for training.
+
+### Validation Set
+
+This set is used to validate our model performance during training. This validation process gives information that helps us tune the model’s hyperparameters and configurations accordingly. 
+- It tell us if the training is moving in the right direction or not.
+
+The main idea of splitting the dataset into a validation set is to prevent our model from **overfitting** i.e., the model becomes really good at classifying the samples in the training set but cannot generalize and make accurate classifications on the data it has not seen before. 
+
+### Test set
+
+It tests the model after completing the training by providing an unbiased final model performance metric in terms of accuracy, precision, etc. 
+- It answers the question: "How well does the model perform?"
+
+---
+
+## Modelling and evaluating the model
+
+There are various machine learning models that you can choose according to the objective, for example, Linear Regression, Support Vector Machine (SVM), Decision Tree, Random Forest, K-Nearest Neighbors, Neural Network, K-means, etc.
+
+We will see some of them when going through the examples.
+
+Once we train the model, we need to evaluate it. Depending of your supervised learning problem, we have different metrics:
+- **Classification metrics:** accuracy, ROC curve, confusion matrix
+- **Regression metrics:** Mean Absolute Error, Mean Squared Error (MSE), Root Mean Square Error (RMSE), `\(R^2\)` metric.
+
+## Prediction
+
+When the best model is determined, it can be used to predict the new samples on the testing set.
+
+---
+
+class: center, middle
+
+# Regression
+
+---
+
+# Regression
+
+**Regression** is a type of **supervised** learning. One example of algorithm that we can use for this kid of problem is a **Linear Regression**.
+
+- Yes, it is the same Linear Regression as previos seem
+  -  In general, ML doesn't seem to make many statistical assumptions about the data.
+  
+To explain how to solve a Regression problem, I am going to use the dataset *Medical insurance costs*. The data contains medical information and costs billed by health insurance companies. It contains 1338 rows of data and the  columns: age, gender, BMI, children, smoker, region as features and insurance charges as the label.
+
+I am going to use the R libraries `tidyverse` and `tidymodels`. 
+- `tidymodels` is a library for machine learning workflow
+
+---
+
+# Regression example - Data collection
+
+The first step is to collect the data. The data is available at github and the link can be seen on the example.
+
+
+```r
+# Load libraries
+library(tidyverse)
+library(tidymodels)
+
+# Load data sets
+url &lt;- 'https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/insurance.csv'
+insurance &lt;- read_csv(url)
+```
+
+We can see some of the data by using `glimpse`. We can see that we have 1338 rows and 7 columns. Also, `sex`, `smoker` and `region` are characters that will be transformed to factors.
+
+
+```r
+glimpse(insurance)
+```
+
+```
+## Rows: 1,338
+## Columns: 7
+## $ age      &lt;dbl&gt; 19, 18, 28, 33, 32, 31, 46, 37, 37, 60, 25, 62, 23, 56, 27, 1~
+## $ sex      &lt;chr&gt; "female", "male", "male", "male", "male", "female", "female",~
+## $ bmi      &lt;dbl&gt; 27.900, 33.770, 33.000, 22.705, 28.880, 25.740, 33.440, 27.74~
+## $ children &lt;dbl&gt; 0, 1, 3, 0, 0, 0, 1, 3, 2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0~
+## $ smoker   &lt;chr&gt; "yes", "no", "no", "no", "no", "no", "no", "no", "no", "no", ~
+## $ region   &lt;chr&gt; "southwest", "southeast", "southeast", "northwest", "northwes~
+## $ charges  &lt;dbl&gt; 16884.924, 1725.552, 4449.462, 21984.471, 3866.855, 3756.622,~
+```
+
+---
+
+# Regression example - EDA
+
+I'll be using the package `dlookr` to help us with the EDA. We are displaying:
+- na: Number of NA values
+- mean, standard deviation and IQR 
+- p00: min value; p25: 1st quartile; p50: median; p75: third quartile; p100: max value
+
+
+```r
+library(dlookr)
+library(DT)
+dlookr::describe(insurance, quantiles = c(0, 0.25, 0.5, 0.75, 1),
+                 statistics = c("na", "mean", "sd", "IQR", "quantiles")) %&gt;%
+  DT::datatable(rownames = FALSE, options = list(dom = 't',scrollX = TRUE, scrollCollapse = TRUE))
+```
+
+<div id="htmlwidget-674248f1683265a0c5ec" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-674248f1683265a0c5ec">{"x":{"filter":"none","vertical":false,"data":[["age","bmi","children","charges"],[1338,1338,1338,1338],[0,0,0,0],[39.2070254110613,30.6633968609865,1.0949177877429,13270.4222651413],[14.0499603792162,6.09818691167901,1.20549273978191,12110.011236694],[24,8.3975,2,11899.625365],[18,15.96,0,1121.8739],[27,26.29625,0,4740.28715],[39,30.4,1,9382.033],[51,34.69375,2,16639.912515],[64,53.13,5,63770.42801]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# EDA - Sex
+
+
+```r
+insurance %&gt;% 
+  group_by(sex) %&gt;% 
+  describe(quantiles = c(0, 0.25, 0.5, 0.75, 1),
+           statistics = c("mean", "sd", "IQR", "quantiles")) %&gt;%
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE))
+```
+
+<div id="htmlwidget-3e22ca5bb6fc872ce6cb" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3e22ca5bb6fc872ce6cb">{"x":{"filter":"none","vertical":false,"data":[["age","age","bmi","bmi","charges","charges","children","children"],["female","male","female","male","female","male","female","male"],[662,676,662,676,662,676,662,676],[0,0,0,0,0,0,0,0],[39.5030211480363,38.9171597633136,30.377749244713,30.9431286982249,12569.5788438353,13956.7511777219,1.07401812688822,1.11538461538462],[14.054222528803,14.0501409481131,6.04602308574534,6.14043461579224,11128.7038009154,12971.0259150231,1.1921154944749,1.21898561350244],[24.75,25,8.18875,8.5825,9569.533125,14370.45625,2,2],[18,18,16.815,15.96,1607.5101,1121.8739,0,0],[27,26,26.125,26.41,4885.1587,4619.134,0,0],[40,39,30.1075,30.6875,9412.9625,9369.61575,1,1],[51.75,51,34.31375,34.9925,14454.691825,18989.59025,2,2],[64,64,48.07,53.13,63770.42801,62592.87309,5,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>sex<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"autoWidth":true,"dom":"t","scrollX":true,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# EDA - Smoker
+
+
+```r
+insurance %&gt;% 
+  group_by(smoker) %&gt;% 
+  describe(quantiles = c(0, 0.25, 0.5, 0.75, 1),
+           statistics = c("mean", "sd", "IQR", "quantiles")) %&gt;%
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE, scrollY = "300px"))
+```
+
+<div id="htmlwidget-8aee1eaf931d14e366f2" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8aee1eaf931d14e366f2">{"x":{"filter":"none","vertical":false,"data":[["age","age","bmi","bmi","charges","charges","children","children"],["no","yes","no","yes","no","yes","no","yes"],[1064,274,1064,274,1064,274,1064,274],[0,0,0,0,0,0,0,0],[39.3853383458647,38.514598540146,30.651795112782,30.7084489051095,8434.2682978562,32050.2318315328,1.09022556390977,1.11313868613139],[14.0834100168571,13.9231856073704,6.04311138978628,6.3186439826462,5993.78181919493,11541.5471755891,1.21813605659041,1.15706572915061],[25.25,22,8.115,9.11625,7376.44835,20192.9630625,2,2],[18,18,15.96,17.195,1121.8739,12829.4551,0,0],[26.75,27,26.315,26.08375,3986.4387,20826.2442125,0,0],[40,38,30.3525,30.4475,7345.4053,34456.34845,1,1],[52,49,34.43,35.2,11362.88705,41019.207275,2,2],[64,64,53.13,52.58,36910.60803,63770.42801,5,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>smoker<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"autoWidth":true,"dom":"t","scrollX":true,"scrollY":"300px","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# EDA - Region
+
+
+```r
+insurance %&gt;% 
+  group_by(region) %&gt;% 
+  describe(quantiles = c(0, 0.25, 0.5, 0.75, 1),
+           statistics = c("mean", "sd", "IQR", "quantiles")) %&gt;%
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, scrollX = TRUE, scrollY = "300px"))
+```
+
+<div id="htmlwidget-a6361daf14fbdd3885a0" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a6361daf14fbdd3885a0">{"x":{"filter":"none","vertical":false,"data":[["age","age","age","age","bmi","bmi","bmi","bmi","charges","charges","charges","charges","children","children","children","children"],["northeast","northwest","southeast","southwest","northeast","northwest","southeast","southwest","northeast","northwest","southeast","southwest","northeast","northwest","southeast","southwest"],[324,325,364,325,324,325,364,325,324,325,364,325,324,325,364,325],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[39.2685185185185,39.1969230769231,38.9395604395604,39.4553846153846,29.1735030864198,29.1997846153846,33.355989010989,30.5966153846154,13406.3845163858,12417.5753739692,14735.4114376099,12346.9373772923,1.0462962962963,1.14769230769231,1.04945054945055,1.14153846153846],[14.0690071612854,14.0516460222788,14.1645845492777,13.959885549617,5.93751330426977,5.13676496196331,6.47764793043144,5.69183579189187,11255.8030655785,11072.27692758,13971.0985889917,11557.1791007488,1.19894891474658,1.1718282239794,1.17727552370077,1.27595187267644],[24,25,24.25,24,8.0275,7.03,9.24,7.7,11493.0418125,9992.00725,15085.4007,8711.45,2,2,2,2],[18,19,18,19,15.96,17.385,19.8,17.4,1694.7964,1621.3402,1121.8739,1241.565,0,0,0,0],[27,26,26.75,27,24.86625,25.745,28.5725,26.9,5194.3222875,4719.73655,4440.8862,4751.07,0,0,0,0],[39.5,39,39,39,28.88,28.88,33.33,30.3,10057.652025,8965.79575,9294.13195,8798.593,1,1,1,1],[51,51,51,51,32.89375,32.775,37.8125,34.6,16687.3641,14711.7438,19526.2869,13462.52,2,2,2,2],[64,64,64,64,48.07,42.94,53.13,47.6,58571.07448,60021.39897,63770.42801,52590.82939,5,5,5,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>region<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"autoWidth":true,"scrollX":true,"scrollY":"300px","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# EDA - correlation
+
+
+```r
+correlate(insurance) %&gt;%
+  plot()
+```
+
+![](machine_learning_slides_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+---
+
+# Regression example - Feature engineering
+
+We need to transform the characters values to factors.
+
+
+```r
+insurance &lt;- insurance %&gt;%
+  mutate_if(is.character, as.factor)
+
+glimpse(insurance)
+```
+
+```
+## Rows: 1,338
+## Columns: 7
+## $ age      &lt;dbl&gt; 19, 18, 28, 33, 32, 31, 46, 37, 37, 60, 25, 62, 23, 56, 27, 1~
+## $ sex      &lt;fct&gt; female, male, male, male, male, female, female, female, male,~
+## $ bmi      &lt;dbl&gt; 27.900, 33.770, 33.000, 22.705, 28.880, 25.740, 33.440, 27.74~
+## $ children &lt;dbl&gt; 0, 1, 3, 0, 0, 0, 1, 3, 2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0~
+## $ smoker   &lt;fct&gt; yes, no, no, no, no, no, no, no, no, no, no, yes, no, no, yes~
+## $ region   &lt;fct&gt; southwest, southeast, southeast, northwest, northwest, southe~
+## $ charges  &lt;dbl&gt; 16884.924, 1725.552, 4449.462, 21984.471, 3866.855, 3756.622,~
+```
+
+Ordinary least squares is invariant to the scale of numerical variables, while methods such as lasso or ridge regression are not. 
+- For invariant methods there is no real need for standardisation
+- For non-invariant methods you should standardise. 
+
+---
+
+# Regression - Data Splitting
+
+We will be using the `initial_split()` function to partition the data into training and test sets. The main arguments of the function are: `data` and `prop` that represents the training split proportion.
+  - The split will be 80/20 for training/test.
+
+After creating the partition, we need to apply the `training()` and `testing()` functions to have the partitions.
+
+&gt; Remember to always use `set.seed()` to ensure your results are reproducible.
+
+
+```r
+set.seed(88)
+
+# create split object
+insurance_split &lt;- initial_split(insurance, prop = 0.8)
+
+# Build training data set
+insurance_train &lt;- insurance_split %&gt;% training()
+cat("Insurance train dimension:", nrow(insurance_train), "rows and", ncol(insurance_train), "columns")
+```
+
+```
+## Insurance train dimension: 1070 rows and 7 columns
+```
+
+```r
+# Build testing data set
+insurance_test &lt;- insurance_split %&gt;% testing()
+cat("Insurance test dimension:", nrow(insurance_test), "rows and", ncol(insurance_test), "columns")
+```
+
+```
+## Insurance test dimension: 268 rows and 7 columns
+```
+
+---
+
+# Regression - Modelling
+
+The next step in the process is to build a linear regression model to fit our training data.
+
+For every model type, such as linear regression, there are numerous packages (or *engines*) that can be used.
+
+For example, we can use the `lm()` function from base R or the `stan_glm()` function from the `rstanarm` package. Both of these functions will fit a linear regression model to our data with slightly different implementations.
+
+The `parsnip` package from `tidymodels` acts like an aggregator across the various modeling engines within R. This makes it easy to implement machine learning algorithms from different R packages with one unifying syntax.
+
+To specify a model object with parsnip, we must:
+
+1. Pick a model type
+2. Set the engine
+3. Set the mode (either regression or classification)
+
+---
+
+# Regression - Modelling
+
+Linear regression is implemented with the `linear_reg()` function in `parsnip`. To the set the engine and mode, we use `set_engine()` and `set_mode()`.
+
+Let’s create a linear regression model object with the `lm` engine. 
+- This is the default engine for most applications.
+
+
+```r
+lm_model &lt;- linear_reg() %&gt;% 
+            set_engine('lm') %&gt;% # adds lm implementation of linear regression
+            set_mode('regression')
+
+# View object properties
+lm_model
+```
+
+```
+## Linear Regression Model Specification (regression)
+## 
+## Computational engine: lm
+```
+
+---
+
+# Regression - Fit model to data
+
+We can fit the model by using the `fit()` function from `parsnip`. The function has the following arguments:
+- parnsip model 
+- model formula
+- data frame with the training data
+
+In our formula, we have specified that `charges` is the response variable and age, sex, bmi, children, smoker and region are our predictor variables.
+
+
+```r
+lm_fit &lt;- lm_model %&gt;% 
+          fit(charges ~ ., data = insurance_train)
+
+# View lm_fit properties
+lm_fit
+```
+
+```
+## parsnip model object
+## 
+## Fit time:  0ms 
+## 
+## Call:
+## stats::lm(formula = charges ~ ., data = data)
+## 
+## Coefficients:
+##     (Intercept)              age          sexmale              bmi  
+##        -12582.4            257.7           -271.9            359.6  
+##        children        smokeryes  regionnorthwest  regionsoutheast  
+##           484.0          23549.5           -527.8          -1131.8  
+## regionsouthwest  
+##         -1229.9
+```
+
+---
+
+# Regression - Exploring the model
+
+To obtain the results from our trained model in a data frame, we can use the `tidy()` and `glance()` functions from the `broom` package.
+
+The `tidy()` function takes a linear regression object and returns a data frame of the estimated model coefficients and their associated F-statistics and p-values.
+
+
+```r
+library(broom)
+tidy(lm_fit) # Data frame of estimated coefficients
+```
+
+```
+## # A tibble: 9 x 5
+##   term            estimate std.error statistic   p.value
+##   &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)      -12582.    1063.    -11.8   1.92e- 30
+## 2 age                 258.      12.6    20.5   8.98e- 79
+## 3 sexmale            -272.     354.     -0.769 4.42e-  1
+## 4 bmi                 360.      30.9    11.7   1.26e- 29
+## 5 children            484.     145.      3.33  9.06e-  4
+## 6 smokeryes         23550.     434.     54.2   4.35e-308
+## 7 regionnorthwest    -528.     508.     -1.04  2.99e-  1
+## 8 regionsoutheast   -1132.     504.     -2.24  2.50e-  2
+## 9 regionsouthwest   -1230.     502.     -2.45  1.45e-  2
+```
+
+---
+
+# Regression - Exploring the model
+
+The `glance()` function returns performance metrics obtained on the training data such as the R2 value (r.squared) and the RMSE (sigma).
+
+
+```r
+# Performance metrics on training data
+glance(lm_fit)
+```
+
+```
+## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic p.value    df  logLik    AIC    BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1     0.769         0.767 5755.      441.       0     8 -10778. 21575. 21625.
+## # ... with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+
+---
+
+# Regression - Predict on the test set
+
+To assess the performance of the model, we must use the test set to predict the charge value and then compare to the real value.
+
+This is done with the `predict()` function from `parnsip`. This function takes two important arguments:
+- Trained parnsip model 
+- new_data to generate predictions
+
+It’s best to combine the test data set and the predictions into a single data frame.
+
+
+```r
+insurance_test_results &lt;- predict(lm_fit, new_data = insurance_test) %&gt;% 
+                            bind_cols(insurance_test)
+
+# View results
+insurance_test_results %&gt;% head()
+```
+
+```
+## # A tibble: 6 x 8
+##    .pred   age sex      bmi children smoker region    charges
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt;       &lt;dbl&gt;
+## 1  3285.    33 male    22.7        0 no     northwest  21984.
+## 2  3529.    31 female  25.7        0 no     southeast   3757.
+## 3 11641.    60 female  25.8        0 no     northwest  28923.
+## 4 31690.    34 female  31.9        1 yes    northeast  37702.
+## 5  1518.    18 female  26.3        0 no     northeast   2198.
+## 6  8413.    31 female  36.6        2 no     southeast   4950.
+```
+
+---
+
+# Regression - Evaluate the model
+
+To evaluate the model, I'll use RMSE and `\(R^2\)` that can be obtained by using the functions `rmse()` and `rsq()` functions. Both functions take the following arguments:
+- `data`: dataframe with real and predicted values
+- `truth`: column with the real labels
+- `estimate`: columns with the predictions
+
+
+```r
+# RMSE on test set
+rmse(insurance_test_results, truth = charges, estimate = .pred) %&gt;%
+  # R2 on the test set
+  bind_rows(rsq(insurance_test_results, truth = charges, estimate = .pred))
+```
+
+```
+## # A tibble: 2 x 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard    7185.   
+## 2 rsq     standard       0.695
+```
+
+The closes to zero the RMSE value is the best your model is, and we can see that the RMSE of this model is very high, which indicates that this model is not a very good model to predict insurance charges.
+
+---
+
+# Regression - Plot R2
+
+.pull-left[
+
+We can visualise the fit of the model by plotting the `\(R^2\)`.
+
+
+```r
+ggplot(data = insurance_test_results,
+       mapping = aes(x = .pred, y = charges)) +
+  geom_point(color = '#006EA1') +
+  geom_abline(intercept = 0, 
+              slope = 1, 
+              color = 'orange') +
+  labs(title = 'Linear Regression Results - 
+       Insurance Test Set',
+       x = 'Predicted Insurance Value',
+       y = 'Actual Insurance Value')
+```
+]
+
+.pull-right[
+![](machine_learning_slides_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+]
+
+
+---
+
+# Reference
+
+https://github.com/stedy/Machine-Learning-with-R-datasets/blob/master/insurance.csv
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
