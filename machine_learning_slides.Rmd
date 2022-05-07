@@ -228,7 +228,7 @@ class: center, middle
 
 **Regression** is a type of **supervised** learning. One example of algorithm that we can use for this kid of problem is a **Linear Regression**.
 
-- Yes, it is the same Linear Regression as previos seem
+- Yes, it is the same Linear Regression as previously seem
   -  In general, ML doesn't seem to make many statistical assumptions about the data.
   
 To explain how to solve a Regression problem, I am going to use the dataset *Medical insurance costs*. The data contains medical information and costs billed by health insurance companies. It contains 1338 rows of data and the  columns: age, gender, BMI, children, smoker, region as features and insurance charges as the label.
@@ -265,14 +265,14 @@ glimpse(insurance)
 I'll be using the package `dlookr` to help us with the EDA. We are displaying:
 - na: Number of NA values
 - mean, standard deviation and IQR 
-- p00: min value; p25: 1st quartile; p50: median; p75: third quartile; p100: max value
+- p00: min value; p25: 1st quantile; p50: median; p75: third quantile; p100: max value
 
 ```{r}
 library(dlookr)
 library(DT)
 dlookr::describe(insurance, quantiles = c(0, 0.25, 0.5, 0.75, 1),
                  statistics = c("na", "mean", "sd", "IQR", "quantiles")) %>%
-  DT::datatable(rownames = FALSE, options = list(dom = 't',scrollX = TRUE, scrollCollapse = TRUE))
+  DT::datatable(rownames = FALSE, options = list(dom = 't',scrollX = TRUE, scrollCollapse = TRUE)) %>% formatRound(-1)
 ```
 
 
@@ -285,7 +285,7 @@ insurance %>%
   group_by(sex) %>% 
   describe(quantiles = c(0, 0.25, 0.5, 0.75, 1),
            statistics = c("mean", "sd", "IQR", "quantiles")) %>%
-  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE))
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE)) %>% formatRound(-1)
 ```
 
 ---
@@ -297,7 +297,7 @@ insurance %>%
   group_by(smoker) %>% 
   describe(quantiles = c(0, 0.25, 0.5, 0.75, 1),
            statistics = c("mean", "sd", "IQR", "quantiles")) %>%
-  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE, scrollY = "300px"))
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE, scrollY = "300px")) %>% formatRound(-1)
 ```
 
 ---
@@ -309,7 +309,7 @@ insurance %>%
   group_by(region) %>% 
   describe(quantiles = c(0, 0.25, 0.5, 0.75, 1),
            statistics = c("mean", "sd", "IQR", "quantiles")) %>%
-  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, scrollX = TRUE, scrollY = "300px"))
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, scrollX = TRUE, scrollY = "300px")) %>% formatRound(-1)
 ```
 
 ---
@@ -449,8 +449,8 @@ glance(lm_fit)
 
 To assess the performance of the model, we must use the test set to predict the charge value and then compare to the real value.
 
-This is done with the `predict()` function from `parnsip`. This function takes two important arguments:
-- Trained parnsip model 
+This is done with the `predict()` function. This function takes two important arguments:
+- Trained model 
 - new_data to generate predictions
 
 It’s best to combine the test data set and the predictions into a single data frame.
@@ -514,6 +514,60 @@ ggplot(data = insurance_test_results,
        y = 'Actual Insurance Value')
 ```
 ]
+
+---
+
+class: center, middle
+
+# Classification
+
+---
+
+# Classification
+
+**Classification** is a type of **supervised** learning where we categorise data into classes. There are many different algorithms that can help us solve this kind of problems.
+
+Classification requires a training dataset with many examples of inputs and outputs from which to learn. It can be categorised in two types of problems:
+  - **Binary classification:** The outcome has only **two** labels, for example, disease and not disease. 
+    - Some popular algorithms are: Logistic Regression, Decision Tree, K-Nearest Neighbour (KNN)
+  - **Multi-label classification:** The outcome has multiple labels, for example, dog, cat, bird and other.
+    - Some popular algorithms: KNN, Decision Tree, Random Forest, Naive Bayes
+
+To evaluate the model performance we can make use of ROC, confusion matrix, etc. We need to be aware of **class imbalance** problems.
+
+---
+
+# Evaluation metrics
+
+.pull-left[
+When thinking about classification, some common metrics to understand performance involves:
+  - Accuracy
+  - Precision
+  - Recall
+  - ROC
+  
+Most of this metrics can be determined by creating a **confusion matrix**, a contingency table with two dimensions (*actual* and *predicted*) that help us determine the performance of a classification model when we know the true classification of the data.
+]
+
+.pull-right[
+
+<img src="https://www.nbshare.io/static/snapshots/cm_colored_1-min.png"></img>
+
+]
+
+---
+
+# Evaluation metrics - Confusion Matrix
+
+From the confusion matrix, we can get the following performance metrics:
+
+- **Accuracy:** Proportion of correct predictions among the total number of cases examined.
+$$\text{Acc} = \frac{TP + TN}{N + P}$$
+- **Precision or Positive Predictive Value (PPV):** Proportion of positive predictions that was actually correct
+$$\text{Pr} = \frac{TP}{TP + FP}$$
+
+- **Sensitivity or recall:** Proportion of correct predictions among the positive instances.
+$$\text{Recall} = \frac{TP}{TP + FN}$$
 
 
 ---

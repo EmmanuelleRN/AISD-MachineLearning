@@ -266,7 +266,7 @@ class: center, middle
 
 **Regression** is a type of **supervised** learning. One example of algorithm that we can use for this kid of problem is a **Linear Regression**.
 
-- Yes, it is the same Linear Regression as previos seem
+- Yes, it is the same Linear Regression as previously seem
   -  In general, ML doesn't seem to make many statistical assumptions about the data.
   
 To explain how to solve a Regression problem, I am going to use the dataset *Medical insurance costs*. The data contains medical information and costs billed by health insurance companies. It contains 1338 rows of data and the  columns: age, gender, BMI, children, smoker, region as features and insurance charges as the label.
@@ -317,7 +317,7 @@ glimpse(insurance)
 I'll be using the package `dlookr` to help us with the EDA. We are displaying:
 - na: Number of NA values
 - mean, standard deviation and IQR 
-- p00: min value; p25: 1st quartile; p50: median; p75: third quartile; p100: max value
+- p00: min value; p25: 1st quantile; p50: median; p75: third quantile; p100: max value
 
 
 ```r
@@ -325,11 +325,11 @@ library(dlookr)
 library(DT)
 dlookr::describe(insurance, quantiles = c(0, 0.25, 0.5, 0.75, 1),
                  statistics = c("na", "mean", "sd", "IQR", "quantiles")) %&gt;%
-  DT::datatable(rownames = FALSE, options = list(dom = 't',scrollX = TRUE, scrollCollapse = TRUE))
+  DT::datatable(rownames = FALSE, options = list(dom = 't',scrollX = TRUE, scrollCollapse = TRUE)) %&gt;% formatRound(-1)
 ```
 
-<div id="htmlwidget-674248f1683265a0c5ec" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-674248f1683265a0c5ec">{"x":{"filter":"none","vertical":false,"data":[["age","bmi","children","charges"],[1338,1338,1338,1338],[0,0,0,0],[39.2070254110613,30.6633968609865,1.0949177877429,13270.4222651413],[14.0499603792162,6.09818691167901,1.20549273978191,12110.011236694],[24,8.3975,2,11899.625365],[18,15.96,0,1121.8739],[27,26.29625,0,4740.28715],[39,30.4,1,9382.033],[51,34.69375,2,16639.912515],[64,53.13,5,63770.42801]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-e4312bcf39bc57c5658c" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e4312bcf39bc57c5658c">{"x":{"filter":"none","vertical":false,"data":[["age","bmi","children","charges"],[1338,1338,1338,1338],[0,0,0,0],[39.2070254110613,30.6633968609865,1.0949177877429,13270.4222651413],[14.0499603792162,6.09818691167901,1.20549273978191,12110.011236694],[24,8.3975,2,11899.625365],[18,15.96,0,1121.8739],[27,26.29625,0,4740.28715],[39,30.4,1,9382.033],[51,34.69375,2,16639.912515],[64,53.13,5,63770.42801]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":8,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":9,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":10,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render","options.columnDefs.6.render","options.columnDefs.7.render","options.columnDefs.8.render","options.columnDefs.9.render"],"jsHooks":[]}</script>
 
 
 ---
@@ -342,11 +342,11 @@ insurance %&gt;%
   group_by(sex) %&gt;% 
   describe(quantiles = c(0, 0.25, 0.5, 0.75, 1),
            statistics = c("mean", "sd", "IQR", "quantiles")) %&gt;%
-  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE))
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE)) %&gt;% formatRound(-1)
 ```
 
-<div id="htmlwidget-3e22ca5bb6fc872ce6cb" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3e22ca5bb6fc872ce6cb">{"x":{"filter":"none","vertical":false,"data":[["age","age","bmi","bmi","charges","charges","children","children"],["female","male","female","male","female","male","female","male"],[662,676,662,676,662,676,662,676],[0,0,0,0,0,0,0,0],[39.5030211480363,38.9171597633136,30.377749244713,30.9431286982249,12569.5788438353,13956.7511777219,1.07401812688822,1.11538461538462],[14.054222528803,14.0501409481131,6.04602308574534,6.14043461579224,11128.7038009154,12971.0259150231,1.1921154944749,1.21898561350244],[24.75,25,8.18875,8.5825,9569.533125,14370.45625,2,2],[18,18,16.815,15.96,1607.5101,1121.8739,0,0],[27,26,26.125,26.41,4885.1587,4619.134,0,0],[40,39,30.1075,30.6875,9412.9625,9369.61575,1,1],[51.75,51,34.31375,34.9925,14454.691825,18989.59025,2,2],[64,64,48.07,53.13,63770.42801,62592.87309,5,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>sex<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"autoWidth":true,"dom":"t","scrollX":true,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2b3d682af6a9cf95b86d" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2b3d682af6a9cf95b86d">{"x":{"filter":"none","vertical":false,"data":[["age","age","bmi","bmi","charges","charges","children","children"],["female","male","female","male","female","male","female","male"],[662,676,662,676,662,676,662,676],[0,0,0,0,0,0,0,0],[39.5030211480363,38.9171597633136,30.377749244713,30.9431286982249,12569.5788438353,13956.7511777219,1.07401812688822,1.11538461538462],[14.054222528803,14.0501409481131,6.04602308574534,6.14043461579224,11128.7038009154,12971.0259150231,1.1921154944749,1.21898561350244],[24.75,25,8.18875,8.5825,9569.533125,14370.45625,2,2],[18,18,16.815,15.96,1607.5101,1121.8739,0,0],[27,26,26.125,26.41,4885.1587,4619.134,0,0],[40,39,30.1075,30.6875,9412.9625,9369.61575,1,1],[51.75,51,34.31375,34.9925,14454.691825,18989.59025,2,2],[64,64,48.07,53.13,63770.42801,62592.87309,5,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>sex<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"autoWidth":true,"dom":"t","scrollX":true,"columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":8,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":9,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":10,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":11,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render","options.columnDefs.6.render","options.columnDefs.7.render","options.columnDefs.8.render","options.columnDefs.9.render","options.columnDefs.10.render"],"jsHooks":[]}</script>
 
 ---
 
@@ -358,11 +358,11 @@ insurance %&gt;%
   group_by(smoker) %&gt;% 
   describe(quantiles = c(0, 0.25, 0.5, 0.75, 1),
            statistics = c("mean", "sd", "IQR", "quantiles")) %&gt;%
-  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE, scrollY = "300px"))
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, dom = 't',scrollX = TRUE, scrollY = "300px")) %&gt;% formatRound(-1)
 ```
 
-<div id="htmlwidget-8aee1eaf931d14e366f2" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8aee1eaf931d14e366f2">{"x":{"filter":"none","vertical":false,"data":[["age","age","bmi","bmi","charges","charges","children","children"],["no","yes","no","yes","no","yes","no","yes"],[1064,274,1064,274,1064,274,1064,274],[0,0,0,0,0,0,0,0],[39.3853383458647,38.514598540146,30.651795112782,30.7084489051095,8434.2682978562,32050.2318315328,1.09022556390977,1.11313868613139],[14.0834100168571,13.9231856073704,6.04311138978628,6.3186439826462,5993.78181919493,11541.5471755891,1.21813605659041,1.15706572915061],[25.25,22,8.115,9.11625,7376.44835,20192.9630625,2,2],[18,18,15.96,17.195,1121.8739,12829.4551,0,0],[26.75,27,26.315,26.08375,3986.4387,20826.2442125,0,0],[40,38,30.3525,30.4475,7345.4053,34456.34845,1,1],[52,49,34.43,35.2,11362.88705,41019.207275,2,2],[64,64,53.13,52.58,36910.60803,63770.42801,5,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>smoker<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"autoWidth":true,"dom":"t","scrollX":true,"scrollY":"300px","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-90dbba33617249b95bdf" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-90dbba33617249b95bdf">{"x":{"filter":"none","vertical":false,"data":[["age","age","bmi","bmi","charges","charges","children","children"],["no","yes","no","yes","no","yes","no","yes"],[1064,274,1064,274,1064,274,1064,274],[0,0,0,0,0,0,0,0],[39.3853383458647,38.514598540146,30.651795112782,30.7084489051095,8434.2682978562,32050.2318315328,1.09022556390977,1.11313868613139],[14.0834100168571,13.9231856073704,6.04311138978628,6.3186439826462,5993.78181919493,11541.5471755891,1.21813605659041,1.15706572915061],[25.25,22,8.115,9.11625,7376.44835,20192.9630625,2,2],[18,18,15.96,17.195,1121.8739,12829.4551,0,0],[26.75,27,26.315,26.08375,3986.4387,20826.2442125,0,0],[40,38,30.3525,30.4475,7345.4053,34456.34845,1,1],[52,49,34.43,35.2,11362.88705,41019.207275,2,2],[64,64,53.13,52.58,36910.60803,63770.42801,5,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>smoker<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"autoWidth":true,"dom":"t","scrollX":true,"scrollY":"300px","columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":8,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":9,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":10,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":11,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render","options.columnDefs.6.render","options.columnDefs.7.render","options.columnDefs.8.render","options.columnDefs.9.render","options.columnDefs.10.render"],"jsHooks":[]}</script>
 
 ---
 
@@ -374,11 +374,11 @@ insurance %&gt;%
   group_by(region) %&gt;% 
   describe(quantiles = c(0, 0.25, 0.5, 0.75, 1),
            statistics = c("mean", "sd", "IQR", "quantiles")) %&gt;%
-  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, scrollX = TRUE, scrollY = "300px"))
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE, scrollX = TRUE, scrollY = "300px")) %&gt;% formatRound(-1)
 ```
 
-<div id="htmlwidget-a6361daf14fbdd3885a0" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a6361daf14fbdd3885a0">{"x":{"filter":"none","vertical":false,"data":[["age","age","age","age","bmi","bmi","bmi","bmi","charges","charges","charges","charges","children","children","children","children"],["northeast","northwest","southeast","southwest","northeast","northwest","southeast","southwest","northeast","northwest","southeast","southwest","northeast","northwest","southeast","southwest"],[324,325,364,325,324,325,364,325,324,325,364,325,324,325,364,325],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[39.2685185185185,39.1969230769231,38.9395604395604,39.4553846153846,29.1735030864198,29.1997846153846,33.355989010989,30.5966153846154,13406.3845163858,12417.5753739692,14735.4114376099,12346.9373772923,1.0462962962963,1.14769230769231,1.04945054945055,1.14153846153846],[14.0690071612854,14.0516460222788,14.1645845492777,13.959885549617,5.93751330426977,5.13676496196331,6.47764793043144,5.69183579189187,11255.8030655785,11072.27692758,13971.0985889917,11557.1791007488,1.19894891474658,1.1718282239794,1.17727552370077,1.27595187267644],[24,25,24.25,24,8.0275,7.03,9.24,7.7,11493.0418125,9992.00725,15085.4007,8711.45,2,2,2,2],[18,19,18,19,15.96,17.385,19.8,17.4,1694.7964,1621.3402,1121.8739,1241.565,0,0,0,0],[27,26,26.75,27,24.86625,25.745,28.5725,26.9,5194.3222875,4719.73655,4440.8862,4751.07,0,0,0,0],[39.5,39,39,39,28.88,28.88,33.33,30.3,10057.652025,8965.79575,9294.13195,8798.593,1,1,1,1],[51,51,51,51,32.89375,32.775,37.8125,34.6,16687.3641,14711.7438,19526.2869,13462.52,2,2,2,2],[64,64,64,64,48.07,42.94,53.13,47.6,58571.07448,60021.39897,63770.42801,52590.82939,5,5,5,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>region<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"autoWidth":true,"scrollX":true,"scrollY":"300px","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]}],"order":[],"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ca3bf057e60fd611a49e" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ca3bf057e60fd611a49e">{"x":{"filter":"none","vertical":false,"data":[["age","age","age","age","bmi","bmi","bmi","bmi","charges","charges","charges","charges","children","children","children","children"],["northeast","northwest","southeast","southwest","northeast","northwest","southeast","southwest","northeast","northwest","southeast","southwest","northeast","northwest","southeast","southwest"],[324,325,364,325,324,325,364,325,324,325,364,325,324,325,364,325],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[39.2685185185185,39.1969230769231,38.9395604395604,39.4553846153846,29.1735030864198,29.1997846153846,33.355989010989,30.5966153846154,13406.3845163858,12417.5753739692,14735.4114376099,12346.9373772923,1.0462962962963,1.14769230769231,1.04945054945055,1.14153846153846],[14.0690071612854,14.0516460222788,14.1645845492777,13.959885549617,5.93751330426977,5.13676496196331,6.47764793043144,5.69183579189187,11255.8030655785,11072.27692758,13971.0985889917,11557.1791007488,1.19894891474658,1.1718282239794,1.17727552370077,1.27595187267644],[24,25,24.25,24,8.0275,7.03,9.24,7.7,11493.0418125,9992.00725,15085.4007,8711.45,2,2,2,2],[18,19,18,19,15.96,17.385,19.8,17.4,1694.7964,1621.3402,1121.8739,1241.565,0,0,0,0],[27,26,26.75,27,24.86625,25.745,28.5725,26.9,5194.3222875,4719.73655,4440.8862,4751.07,0,0,0,0],[39.5,39,39,39,28.88,28.88,33.33,30.3,10057.652025,8965.79575,9294.13195,8798.593,1,1,1,1],[51,51,51,51,32.89375,32.775,37.8125,34.6,16687.3641,14711.7438,19526.2869,13462.52,2,2,2,2],[64,64,64,64,48.07,42.94,53.13,47.6,58571.07448,60021.39897,63770.42801,52590.82939,5,5,5,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>described_variables<\/th>\n      <th>region<\/th>\n      <th>n<\/th>\n      <th>na<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>IQR<\/th>\n      <th>p00<\/th>\n      <th>p25<\/th>\n      <th>p50<\/th>\n      <th>p75<\/th>\n      <th>p100<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"autoWidth":true,"scrollX":true,"scrollY":"300px","columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":8,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":9,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":10,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"targets":11,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\");\n  }"},{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10,11]}],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render","options.columnDefs.6.render","options.columnDefs.7.render","options.columnDefs.8.render","options.columnDefs.9.render","options.columnDefs.10.render"],"jsHooks":[]}</script>
 
 ---
 
@@ -525,7 +525,7 @@ lm_fit
 ```
 ## parsnip model object
 ## 
-## Fit time:  0ms 
+## Fit time:  20ms 
 ## 
 ## Call:
 ## stats::lm(formula = charges ~ ., data = data)
@@ -594,8 +594,8 @@ glance(lm_fit)
 
 To assess the performance of the model, we must use the test set to predict the charge value and then compare to the real value.
 
-This is done with the `predict()` function from `parnsip`. This function takes two important arguments:
-- Trained parnsip model 
+This is done with the `predict()` function. This function takes two important arguments:
+- Trained model 
 - new_data to generate predictions
 
 It’s best to combine the test data set and the predictions into a single data frame.
@@ -675,6 +675,45 @@ ggplot(data = insurance_test_results,
 ![](machine_learning_slides_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 ]
 
+---
+
+class: center, middle
+
+# Classification
+
+---
+
+# Classification
+
+**Classification** is a type of **supervised** learning where we categorise data into classes. There are many different algorithms that can help us solve this kind of problems.
+
+Classification requires a training dataset with many examples of inputs and outputs from which to learn. It can be categorised in two types of problems:
+  - **Binary classification:** The outcome has only **two** labels, for example, disease and not disease. 
+    - Some popular algorithms are: Logistic Regression, Decision Tree, K-Nearest Neighbour (KNN)
+  - **Multi-label classification:** The outcome has multiple labels, for example, dog, cat, bird and other.
+    - Some popular algorithms: KNN, Decision Tree, Random Forest, Naive Bayes
+
+To evaluate the model performance we can make use of ROC, confusion matrix, etc. We need to be aware of **class imbalance** problems.
+
+---
+
+# Evaluation metrics
+
+.pull-left[
+When thinking about classification, some common metrics to understand performance involves:
+  - Accuracy
+  - Precision
+  - Recall
+  - ROC
+  
+Most of this metrics can be determined by creating a **confusion matrix**, a contingency table with two dimensions (*actual* and *predicted*) that help us determine the performance of a classification model when we know the true classification of the data.
+]
+
+.pull-right[
+
+&lt;img src="https://www.nbshare.io/static/snapshots/cm_colored_1-min.png"&gt;&lt;/img&gt;
+
+]
 
 ---
 
