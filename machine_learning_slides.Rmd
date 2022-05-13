@@ -63,7 +63,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
   - Speech recognition
   - Computer vision
 
-![](www/ml-ai.png){width=50px}
+<center><img src="https://backend.mile.cloud/upload/module/3ab28920802a8e64b800fdd2d22e7940.png" height="200"></img></center>
 
 ---
 
@@ -81,9 +81,10 @@ class: center, middle
 
 # Supervised Learning
 
-**Supervised learning** is where you have input variables (x) and an output variable (Y) and you use an algorithm to learn the mapping function from the input to the output.
+.pull-left[
+**Supervised learning** is where you have input variables ($X$) and an output variable ($y$) and you use an algorithm to learn the mapping function from the input to the output.
 
-<center> Y = f(x) </center>
+<center> y = f(X) </center>
 
 - It is the most common type of Machine Learning problem
 
@@ -92,7 +93,11 @@ class: center, middle
 - Supervised learning can be grouped into two problems:
   - **Regression:** The output variable is a real number, for example, weight
   - **Clustering:** The output variable is a category, for example, disease and no disease 
-  
+]
+
+.pull-right[
+<img src="https://maplearn.readthedocs.io/en/latest/_images/classif_reg.png"></img>
+]
 ---
 
 # Steps
@@ -122,11 +127,13 @@ Understand the characteristics and distribution of the data to help us understan
 
 ---
 
-# Data Preprocessing or Feature Engineering
+# Data Preprocessing
+
+**Data preprocessing** is a process of cleaning the data and enabling them in the right format so they can be consumed by the algorithm it consists of data cleaning, missing values handling, feature selection and feature engineering 
 
 If the dataset is not good and if there are missing values, outliers, or the features are not presented in a corrected format, the ML model built from this data will probably be bad. 
 
-Some methods are usually used: encoding, normalization, imputation, outliers and NaN rejections, variable selection
+Methods usually used: encoding, normalization, imputation, outliers and NaN rejections, feature selection
 
 ## Encoding
 
@@ -134,21 +141,21 @@ Some methods are usually used: encoding, normalization, imputation, outliers and
 
 ---
 
-## Normalization
+## Feature scaling
 
 Some ML models need to be on the "same range" to fit the data properly without the addition of bias due to different scales. For example, if we have as features height as 150cm and salary as 40000, salary might be more important due to potentially being in the 1000's but that's not necessarily true.
 
-Methods to normalise: 
-- **Min-max:** rescales the range of features to the new range in [0,1]
+Methods:
+- **Min-max normalization:** rescales the range of features to the new range in [0,1]
 $$X_{normalised} = \frac{X - min(X)}{max(X) - min(x)}$$
 - **Standardisation (Z-score normalisation):** Rescale the feature in a new range with a zero mean and a standard deviation is 1
 $$X_{normalised} = \frac{X - \bar{X}}{\sigma_X}$$
 
 ---
 
-## NA 
+## Missing values 
 
-When we have NAs on the data, it means that the data is Not Available, i.e., we have missing information. In this case we can:
+When we have missing data, the data won't be available, i.e., we have missing information. In this case we can:
 - *Remove* the missing data
   - If enough data available
   - If the missing data does not have a pattern, i.e., is random
@@ -156,7 +163,7 @@ When we have NAs on the data, it means that the data is Not Available, i.e., we 
   - Use the mean or median of the variable to input missing values
   - Apply some algorithm, for example, linear or logistic regression to determine the likely value
 
-## Variable selection
+## Feature selection
 
 Select the most relevant variables for the model. This can be used to:
 - Simplify the model
@@ -209,7 +216,7 @@ There are various machine learning models that you can choose according to the o
 We will see some of them when going through the examples.
 
 Once we train the model, we need to evaluate it. Depending of your supervised learning problem, we have different metrics:
-- **Classification metrics:** accuracy, ROC curve, confusion matrix
+- **Classification metrics:** F1 score, precision, recall, accuracy
 - **Regression metrics:** Mean Absolute Error, Mean Squared Error (MSE), Root Mean Square Error (RMSE), $R^2$ metric.
 
 ## Prediction
@@ -229,7 +236,7 @@ class: center, middle
 **Regression** is a type of **supervised** learning. One example of algorithm that we can use for this kid of problem is a **Linear Regression**.
 
 - Yes, it is the same Linear Regression as previously seem
-  -  In general, ML doesn't seem to make many statistical assumptions about the data.
+  -  In general, ML doesn’t make any assumptions but the user should make sure that the data meet the assumptions of the linear regression model if he/she wants to use it 
   
 To explain how to solve a Regression problem, I am going to use the dataset *Medical insurance costs*. The data contains medical information and costs billed by health insurance companies. It contains 1338 rows of data and the  columns: age, gender, BMI, children, smoker, region as features and insurance charges as the label.
 
@@ -316,7 +323,7 @@ insurance %>%
 
 # EDA - correlation
 
-```{r}
+```{r fig.height=6}
 correlate(insurance) %>%
   plot()
 ```
@@ -535,6 +542,7 @@ Classification requires a training dataset with many examples of inputs and outp
 
 To evaluate the model performance we can make use of ROC, confusion matrix, etc. We need to be aware of **class imbalance** problems.
 
+
 ---
 
 # Evaluation metrics
@@ -566,9 +574,213 @@ $$\text{Acc} = \frac{TP + TN}{N + P}$$
 - **Precision or Positive Predictive Value (PPV):** Proportion of positive predictions that was actually correct
 $$\text{Pr} = \frac{TP}{TP + FP}$$
 
-- **Sensitivity or recall:** Proportion of correct predictions among the positive instances.
+- **Sensitivity or recall or True Positive Rate (TPR):** Proportion of correct predictions among the positive instances.
 $$\text{Recall} = \frac{TP}{TP + FN}$$
+- **F1 Score:** Harmonic mean of precision and recall.
+$$F_1 = \frac{2 \times TP}{2 \times TP + FP + FN}$$
 
+---
+
+# Evaluation metric - ROC curve
+
+.pull-left[
+
+**ROC curve** is a performance measurement for the classification problems at various threshold settings. This curve plots two parameters:
+- True Positive Rate
+- False Positive Rate = 1 - Specificity
+
+From the ROC curve we can get the **Area Under the Curve (AUC)** metric that ranges from 0 to 1. A model whose predictions are 100% wrong has an AUC of 0.0; one whose predictions are 100% correct has an AUC of 1.0.
+- When AUC is 0.5, it means the model has no class separation capacity whatsoever. 
+
+]
+
+.pull-right[
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Roc_curve.svg/2048px-Roc_curve.svg.png"></img>
+
+]
+
+---
+
+# Class Imbalance problem
+
+An **imbalanced classification** problem is a problem where the distribution of examples across the known classes is biased or skewed. 
+- The distribution can vary from a slight bias to a severe imbalance.
+
+Most of the machine learning algorithms used for classification were designed around the assumption of an equal number of examples for each class. 
+- This results in models that have poor predictive performance, specifically for the minority class
+- Typically, the minority class is more important
+
+For example, we want to detect fraudulent transaction, and if every 1000 transactions only 1 is fraudulent, it is very easy for the model to classify everything as non-fraud, so the accuracy of the model will be almost 1, but the actual class that we wanted to determine, it was wrongfully classified.
+  - We need to look at other metrics that can tell us how the prediction performed for different classes
+  
+> Using **accuracy** as a peformance metric is **not recommended**.
+
+We need to use techniques that will help us undersampling the majority class or oversampling the minority class, for example, Random undersampling and SMOTE oversampling.
+
+---
+
+# Classification - Example
+
+The dataset we are going to use to perform the classification problem is `BreastCancer: Wisconsin Breast Cancer Database`. The data can be downloaded from the `mlbench` package.
+
+The data has 699 observations on 11 variables, one being a character variable, 9 being ordered or nominal, and 1 target class.
+
+```{r}
+library(mlbench)
+data(BreastCancer)
+BreastCancer <- BreastCancer %>% select(-Id)
+glimpse(BreastCancer)
+```
+
+---
+
+# Classification example - Summary
+
+```{r}
+summary(BreastCancer)
+BreastCancer %>% group_by(Class) %>% count() %>% ungroup() %>% mutate(prop = n / sum(n))
+```
+
+---
+
+# Classification - Data Preprocessing
+
+As we have missing data, we will drop the rows that are incomplete.
+
+```{r}
+BreastCancer %>% anyNA()
+cat("Number of rows before dropping missing values: ", nrow(BreastCancer))
+BreastCancer <- BreastCancer %>% drop_na()
+cat("Number of rows after dropping missing values: ", nrow(BreastCancer))
+```
+
+
+As all the variables of the dataset, except Class, can be numerical features, I'll change the variable type.
+
+```{r}
+BreastCancer <- BreastCancer %>% 
+  mutate_at(vars(-("Class")), as.numeric)
+```
+
+---
+
+# Classification - Data Splitting
+
+The split will be 80/20 for training/test.
+
+```{r}
+set.seed(88)
+
+# create split object
+bcancer_split <- initial_split(BreastCancer, prop = 0.8)
+
+# Build training data set
+bcancer_train <- bcancer_split %>% training()
+cat("Breast cancer train dimension:", nrow(bcancer_train), "rows and", ncol(bcancer_train), "columns")
+
+# Build testing data set
+bcancer_test <- bcancer_split %>% testing()
+cat("Breast cancer test dimension:", nrow(bcancer_test), "rows and", ncol(bcancer_test), "columns")
+```
+
+---
+
+# Classification - Modelling
+
+I will be using and comparing the results of two models:
+  - Decision Tree
+  - Suport Vector Machine (SVM)
+
+.pull-left[
+<img src="https://www.tutorialandexample.com/wp-content/uploads/2019/10/Decision-Trees-Root-Node.png"></img>
+]
+
+.pull-right[
+<img src="https://miro.medium.com/max/1088/1*6U9NrruycDBsPOyivpn8UQ.png" height="300"></img>
+]
+
+---
+
+# Classification - Modelling
+
+Decision Tree and SVM are implemented with the  `decision_tree()` and `svm_linear()` functions in `parsnip`. To the set the engine and mode, we use `set_engine()` and `set_mode()`.
+
+Let’s create this models using the following engines:
+- `rpart` for the decision tree that needs the `rpart` package installed
+- `LiblineaR` for the SVM that needs to have the package `LiblineaR` installed
+
+```{r}
+tree_model <- decision_tree() %>%
+              set_engine('rpart') %>%
+              set_mode('classification')
+
+svm_model <- svm_linear() %>%
+             set_engine('LiblineaR') %>%
+             set_mode('classification')
+```
+
+---
+
+# Classification - Fit model to data
+
+`Class` is the response variable and all the other variables are our predictor variables.
+
+```{r}
+tree_fit <- tree_model %>% fit(Class ~ ., data = bcancer_train)
+svm_fit <- svm_model %>% fit(Class ~ ., data = bcancer_train)
+
+# View fit properties
+svm_fit %>% broom::tidy()
+```
+
+---
+
+# Classification - Predict on the test set
+
+To assess the performance of the model, we must use the test set to predict the charge value and then compare to the real value.
+
+
+```{r}
+bcancer_test_results_tree <- predict(tree_fit, new_data = bcancer_test) %>% 
+                             bind_cols(bcancer_test)
+bcancer_test_results_tree %>% head(2)
+
+bcancer_test_results_svm <- predict(svm_fit, new_data = bcancer_test) %>% 
+                            bind_cols(bcancer_test)
+bcancer_test_results_svm %>% head(2)                                      
+
+```
+
+---
+
+# Classification - Evaluate the models
+
+To evaluate the models, we will use the `confusionMatrix` function from `caret`.
+
+.pull-left[
+- Decision Tree
+```{r}
+library(caret)
+confusionMatrix(bcancer_test_results_tree$.pred_class,
+                bcancer_test_results_tree$Class) %>% 
+  tidy() %>%
+  filter(term %in% c("precision", "recall", "specificity", "f1", "accuracy")) %>% 
+  select(term, class, estimate)
+```
+]
+
+.pull-right[
+- SVM
+```{r}
+confusionMatrix(bcancer_test_results_svm$.pred_class,
+                       bcancer_test_results_svm$Class) %>% 
+  tidy() %>%
+  filter(term %in% c("precision", "recall", "specificity", "f1", "accuracy")) %>% 
+  select(term, class, estimate)
+```
+
+]
 
 ---
 
