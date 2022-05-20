@@ -784,8 +784,263 @@ confusionMatrix(bcancer_test_results_svm$.pred_class,
 
 ---
 
+class: center, middle
+
+# Unsupervised Learning
+
+---
+
+# Unsupervised Learning
+
+.pull-left[
+
+This type of problem is called **Unsupervised** because, unlike supervised learning, we don't have a label.
+- The algorithm learns patterns from unlabeled data. 
+
+Common tasks:
+- **Clustering:** Technique that groups unlabeled data based on their similarities or differences. 
+  - Example: KMeans
+- **Dimensionality Reduction**: Reduce the number of features while also preserving the integrity of the dataset as much as possible. 
+  - Example: Principla Components Analysis (PCA)
+  
+Some challenges can occur when it allows machine learning models to execute without any human intervention. For example:
+- Computational complexity due to a high volume of training data
+- Longer training times
+- Higher risk of inaccurate results
+]
+
+.pull-right[
+<img src="https://miro.medium.com/max/433/1*Iihw0V-r0raMMtcDTFGGQA.png"></img>
+
+]
+
+---
+
+class: center, middle
+
+# Clustering
+
+---
+
+# Clustering
+
+Clustering can be considered the most important unsupervised learning problem.
+
+It involves discovering groups in data. Unlike supervised learning, clustering algorithms only interpret the input data and find natural groups or clusters in feature space.
+
+A cluster is a collection of objects which are *similar* between them and are *dissimilar* to the objects belonging to other clusters.
+
+Given a set of points, with some distance between points, grouping the points into some number of clusters, such that
+- **internal (within the cluster)** distances should be small i.e members of clusters are close/similar to each other.
+- **external (intra-cluster)** distances should be large i.e. members of different clusters are dissimilar.
+
+---
+
+# Distance metrics
+
+We need to define a **distance** or **proximity** metric for 2 points.
+- How similar or dissimilar 2 points are
+
+- **Similarity $s(x_i, x_k)$**: Large if $x_i, x_k$ are similar
+- **Dissimilarity (or distance) $d(x_i, x_k)$**: Small if $x_i, x_k$ are similar
+
+Examples:
+
+- **Euclidean Distance: ** $d(\textbf{p}, \textbf{q}) = \sqrt{\sum_{i=1}^n (p_i-q_i)^2}$
+
+- **Mahalanobis Distance: ** $d_M(\textbf{p}, \textbf{q}) = \sqrt{(\textbf{p}-\textbf{y})^TS^{-1}(\textbf{p}-\textbf{y})}$
+
+- **Jaccard Distance: ** $J(A, B) = \frac{|A \cap B|}{|A \cup B|} = \frac{|A \cap B|}{|A| + |B| - |A \cap B|}$
+
+A *good* proximity measure is **very** application dependent. 
+
+---
+
+# Clustering - Example
+
+The steps to perform an unsupervised learning task are very similar to an supervised one, with the difference that we don't need to predict anything.
+
+For the example, we will use the the built-in R data set `USArrests`, which contains statistics in arrests per 100,000 residents for assault, murder, and rape in each of the 50 US states in 1973. It includes also the percent of the population living in urban areas.
+
+```{r}
+library(cluster)    # clustering algorithms
+library(factoextra) # clustering algorithms & visualization
+
+us_arrests <- USArrests
+glimpse(us_arrests)
+```
+
+---
+
+# Clustering - Data Preprocessing
+
+We are going to check and remove NA's if the exist in the data
+
+```{r}
+us_arrests %>% anyNA()
+```
+
+As we don’t want the clustering algorithm to depend to an arbitrary variable unit, we start by scaling/standardizing the data using the R function `scale`:
+
+```{r}
+us_arrests_scaled <- us_arrests %>%
+  scale()
+
+head(us_arrests_scaled)
+```
+
+---
+
+# Clustering - Distance
+
+We can compute and visualise the distance matrix using the functions `get_dist` and `fviz_dist` from the `factoextra` package. 
+
+- `get_dist:` Computing a distance matrix between the rows of a data matrix. 
+  - The default distance computed is the **Euclidean**
+- `fviz_dist:` Visualise the distance matrix
+
+```{r fig.height=4}
+distance <- get_dist(us_arrests_scaled)
+fviz_dist(distance)
+```
+
+---
+
+# Clustering - K-Means
+
+**K-means clustering** is the most commonly used unsupervised machine learning algorithm for partitioning a given data set into a set of $k$ groups determine by the analyst. In k-means clustering, each cluster is represented by its center (i.e, centroid) which corresponds to the mean of points assigned to the cluster.
+
+## Determining the optimal number of clusters
+
+As the number of clusters is user specified, we would like to use the optimal number of clusters. The three most popular methods for determining the optimal clusters are:
+
+- **Elbow method: ** Minimise the total intra-cluster variation (known as total within-cluster variation or total within-cluster sum of square)
+  - Can be calculated using the function `fviz_nbclust` using method `wss`
+- **Silhouette method: ** Measures the quality of a clustering, i.e., it determines how well each object lies within its cluster. A high average silhouette width indicates a good clustering.
+  - Can be calculated using the function `fviz_nbclust` using method `silhouette`
+- **Gap statistic: ** The approach can be applied to any clustering method. The gap statistic compares the total intracluster variation for different values of k with their expected values under null reference distribution of the data (i.e. a distribution with no obvious clustering).
+  - Can be visulaised using the function `fviz_gap_stat` using the statistic generated by `clusGap`
+
+---
+
+# Clustering - Optimal number of clusters
+
+```{r fig.height=4}
+library(patchwork)
+
+set.seed(123)
+
+elbow_method <- fviz_nbclust(us_arrests_scaled, kmeans, method = "wss")
+sill <- fviz_nbclust(us_arrests_scaled, kmeans, method = "silhouette")
+gap_stat <- clusGap(us_arrests_scaled, FUN = kmeans, nstart = 25, K.max = 10, B = 50)
+gap_plot <- fviz_gap_stat(gap_stat)
+
+elbow_method + sill + gap_plot
+```
+
+
+---
+
+# Clustering - KMeans
+
+With most of these approaches suggesting 3 as the number of optimal clusters, we can perform the final analysis and extract the results using 3 clusters.
+
+```{r}
+# Compute k-means clustering with k = 3
+set.seed(123)
+kmeans <- kmeans(us_arrests_scaled, 3, nstart = 25)
+print(kmeans)
+```
+
+---
+
+# Clustering - Visualise clusters
+
+We can visualise the clusters using the function `fviz_cluster`.
+
+```{r fig.height=6}
+fviz_cluster(kmeans, data = us_arrests_scaled)
+```
+
+---
+
+# Clustering - Final step
+
+And we can extract the clusters and add to our initial data to do some descriptive statistics at the cluster level:
+
+```{r}
+us_arrests %>%
+  mutate(cluster = kmeans$cluster) %>%
+  group_by(cluster) %>%
+  summarise_all("mean")
+```
+
+---
+
+class: center, middle
+
+# Principal Components Analysis
+
+---
+
+# Principal Components Analysis (PCA)
+
+**Principal Components Analysis (PCA)** is an unsupervised machine learning technique that seeks to find *principal components*, i.e., linear combinations of the original predictors, that explain a large portion of the variation in a dataset.
+- The goal of PCA is to explain most of the variability in a dataset with fewer variables than the original dataset.
+
+For the example we will use the dataset `fat` available in the `faraway` library. The dataset contains 18 physical measurements.
+
+```{r}
+library(faraway)
+attach(fat)
+glimpse(fat)
+```
+
+---
+
+# PCA - Preprocessing
+
+PCA is **influenced** by the magnitude of each variable; therefore, the results obtained when we perform PCA will also depend on whether the variables have been individually scaled.
+
+```{r}
+apply(fat, 2, var)
+```
+
+PCA works best with numerical data, so in case you have categorical features on the dataset, you need to "dummyfy" the features.
+
+---
+
+# PCA - Example
+
+We can apply PCA with the function `prcomp`. You will also set two arguments, center and scale, to be TRUE. 
+
+```{r}
+fat_pca <- prcomp(fat, center = TRUE, scale. = TRUE)
+summary(fat_pca)
+```
+
+You obtain 18 principal components. Each of these explains a percentage of the total variation in the dataset. 
+-  PC1 explains 59.8% of the total variance, which means that almost half of the information in the dataset can be encapsulated by just that one Principal Component. 
+- PC2 explains 15% of the variance. With just PC1 and PC2 we can explain ~74% of the variance.
+
+---
+
+# PCA - Plotting
+
+We can plot PCA using the `ggbiplot` library. We need to install this library from github using the function `install_github` from `devtools` giving the github link as parameter of the function.
+
+```{r fig.height=5}
+#devtools::install_github("vqv/ggbiplot")
+library(ggbiplot)
+ggbiplot(fat_pca)
+```
+
+---
+
 # Reference
 
 https://github.com/stedy/Machine-Learning-with-R-datasets/blob/master/insurance.csv
 
+The Elements of Statistical Learning
 
+Machine Learning: A Probabilistic Perspective
