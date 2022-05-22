@@ -987,6 +987,7 @@ class: center, middle
 
 **Principal Components Analysis (PCA)** is an unsupervised machine learning technique that seeks to find *principal components*, i.e., linear combinations of the original predictors, that explain a large portion of the variation in a dataset.
 - The goal of PCA is to explain most of the variability in a dataset with fewer variables than the original dataset.
+- It is **difficult** to interpret the features resultant from PCA, since represent linear combinations of the original features
 
 For the example we will use the dataset `fat` available in the `faraway` library. The dataset contains 18 physical measurements.
 
@@ -1034,6 +1035,48 @@ We can plot PCA using the `ggbiplot` library. We need to install this library fr
 library(ggbiplot)
 ggbiplot(fat_pca)
 ```
+
+---
+
+class: center, middle
+
+# Reinforcement Learning
+
+---
+
+# Reinforcement Learning
+
+.pull-left[
+
+- Training an **agent** which interacts with its **environment**. The agent arrives at different scenarios known as **states** by performing **actions**. Actions lead to **rewards**.
+
+- The agent has one purpose:
+
+  - Maximize its total reward across an **episode**. This episode is anything and everything that happens between the first state and the last or terminal state within the environment.
+  - We reinforce the agent to learn to perform the best actions by **experience**. This is the strategy or **policy**.
+  
+- Markov property, i.e., each state depends solely on the previous state and the transition from that state to the current state.
+]
+
+.pull-right[
+<img src="https://lilianweng.github.io/posts/2018-02-19-rl-overview/RL_illustration.png"></img>
+]
+
+---
+
+class: center, middle
+
+# Deep Learning
+
+---
+
+# Deep Learning
+
+- **Deep Learning** is a subfield of machine learning that deals with algorithms inspired by the structure and function of the brain called **artificial neural networks**.
+
+- For old generations of learning algorithms, performance will plateau. Deep learning is a class of algorithms that is scalable, the performance just keeps getting better as you feed them more data.
+
+<center><img src="https://www.merkleinc.com/sites/default/files/inline-images/DL%20and%20ML2%20resized.jpg"></center>
 
 ---
 
